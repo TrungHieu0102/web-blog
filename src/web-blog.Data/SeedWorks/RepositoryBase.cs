@@ -12,9 +12,11 @@ namespace web_blog.Data.SeedWorks
     public class RepositoryBase<T, Key> : IRepository<T, Key> where T : class
     {
         private readonly DbSet<T> _dbSet;
+        protected readonly WebBlogContext _context;
         public RepositoryBase(WebBlogContext context)
         {
             _dbSet = context.Set<T>();
+            _context = context;
         }
         public void Add(T entity)
         {

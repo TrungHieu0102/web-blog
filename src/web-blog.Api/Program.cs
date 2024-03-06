@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using web_blog.Api;
 using web_blog.Core.Domain.Identity;
 using web_blog.Data;
 
@@ -56,5 +57,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+//Seeding data
+app.MigrateDatabase();
 
 app.Run();

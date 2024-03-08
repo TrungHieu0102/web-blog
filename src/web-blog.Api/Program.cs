@@ -2,13 +2,16 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
+using web_blog.Api.Services;
 using web_blog.Api;
 using web_blog.Core.Domain.Identity;
 using web_blog.Core.Models.Content;
 using web_blog.Core.SeedWorks;
-using web_blog.Data;
 using web_blog.Data.Repositories;
 using web_blog.Data.SeedWorks;
+using web_blog.Data;
+using web_blog.Core.ConfigOptions;
+using web_blog.Api.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -60,7 +63,15 @@ foreach (var service in services)
     }
 }
 
+//Auto mapper
 builder.Services.AddAutoMapper(typeof(PostInListDto));
+
+//Authen and author
+builder.Services.Configure<JwtTokenSettings>(configuration.GetSection("JwtTokenSettings"));
+builder.Services.AddScoped<SignInManager<AppUser>, SignInManager<AppUser>>();
+builder.Services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
 
 //Default config for ASP.NET Core
 builder.Services.AddControllers();

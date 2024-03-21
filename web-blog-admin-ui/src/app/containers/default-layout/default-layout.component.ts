@@ -12,7 +12,6 @@ import { UrlConstants } from 'src/app/shared/constants/url.constants';
 })
 export class DefaultLayoutComponent implements OnInit {
   public navItems = [];
-
   constructor(
     private tokenService: TokenStorageService,
     private router: Router

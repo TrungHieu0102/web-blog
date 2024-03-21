@@ -16,6 +16,15 @@ using web_blog.Api.Filters;
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 var connectionString = configuration.GetConnectionString("DefaultConnection");
+var WebCorsPolicy = "TeduCorsPolicy";
+
+builder.Services.AddCors(o => o.AddPolicy(WebCorsPolicy, builder =>
+{
+    builder.AllowAnyMethod()
+        .AllowAnyHeader()
+        .WithOrigins(configuration["AllowedOrigins"])
+        .AllowCredentials();
+}));
 //Config DB Context and ASP.NET Core Identity
 builder.Services.AddDbContext<WebBlogContext>(options =>
                 options.UseSqlServer(connectionString));
@@ -107,7 +116,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors(WebCorsPolicy);
 app.UseAuthorization();
 
 app.MapControllers();

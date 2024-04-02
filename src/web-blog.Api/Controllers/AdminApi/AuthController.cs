@@ -1,17 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text.Json;
-using web_blog.Core.SeedWorks.Constants;
+using web_blog.Api.Extensions;
 using web_blog.Api.Services;
 using web_blog.Core.Domain.Identity;
 using web_blog.Core.Models.Auth;
 using web_blog.Core.Models.System;
-using web_blog.Api.Extensions;
-
+using web_blog.Core.SeedWorks.Constants;
 namespace web_blog.Api.Controllers.AdminApi
 {
     [Route("api/admin/auth")]

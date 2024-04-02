@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { Page403Component } from './page403/page403.component';
 import { Page404Component } from './page404/page404.component';
 import { Page500Component } from './page500/page500.component';
 import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
 
 const routes: Routes = [
   {
@@ -12,6 +12,13 @@ const routes: Routes = [
     data: {
       title: 'Page 404'
     }
+  },
+  {
+    path: '403',
+    component: Page403Component,
+    data: {
+      title: 'Page 403',
+    },
   },
   {
     path: '500',
@@ -25,13 +32,6 @@ const routes: Routes = [
     component: LoginComponent,
     data: {
       title: 'Login Page'
-    }
-  },
-  {
-    path: 'register',
-    component: RegisterComponent,
-    data: {
-      title: 'Register Page'
     }
   }
 ];

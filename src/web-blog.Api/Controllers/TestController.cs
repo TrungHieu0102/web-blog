@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace web_blog.Api.Controllers
+namespace TeduBlog.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

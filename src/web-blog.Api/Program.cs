@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 using web_blog.Api.Services;
@@ -12,6 +13,7 @@ using web_blog.Data.SeedWorks;
 using web_blog.Data;
 using web_blog.Core.ConfigOptions;
 using web_blog.Api.Filters;
+using web_blog.Api.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -20,8 +22,9 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 var connectionString = configuration.GetConnectionString("DefaultConnection");
-var WebCorsPolicy = "TeduCorsPolicy";
-
+var WebCorsPolicy = "WebCorsPolicy";
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 builder.Services.AddCors(o => o.AddPolicy(WebCorsPolicy, builder =>
 {
     builder.AllowAnyMethod()

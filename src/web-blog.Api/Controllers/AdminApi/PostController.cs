@@ -4,11 +4,13 @@ using web_blog.Core.Domain.Content;
 using web_blog.Core.Models.Content;
 using web_blog.Core.Models;
 using web_blog.Core.SeedWorks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace web_blog.Api.Controllers.AdminApi
 {
     [Route("api/admin/post")]
     [ApiController]
+
     public class PostController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;

@@ -10,6 +10,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { ConfirmationService } from 'primeng/api';
 import { RolesDetailComponent } from './roles-detail.component';
 import { MessageConstants } from '../../../shared/constants/messages.constant';
+import { PermissionGrantComponent } from './permission-grant.component';
 
 @Component({
   selector: 'app-role',
@@ -79,7 +80,26 @@ export class RoleComponent implements OnInit, OnDestroy {
       }, 1000);
     }
   }
-  showPermissionModal(id: string, name: string) {}
+  showPermissionModal(id: string, name: string) {
+    const ref = this.dialogService.open(PermissionGrantComponent, {
+      data: {
+        id: id,
+      },
+      header: name,
+      width: '70%',
+    });
+    const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+    const dynamicComponent = dialogRef?.instance as DynamicDialogComponent;
+    const ariaLabelledBy = dynamicComponent.getAriaLabelledBy();
+    dynamicComponent.getAriaLabelledBy = () => ariaLabelledBy;
+    ref.onClose.subscribe((data: RoleDto) => {
+      if (data) {
+        this.alertService.showSuccess(MessageConstants.UPDATED_OK_MSG);
+        this.selectedItems = [];
+        this.loadData();
+      }
+    });
+  }
   showEditModal() {
     if (this.selectedItems.length == 0) {
       this.alertService.showError(MessageConstants.NOT_CHOOSE_ANY_RECORD);
@@ -124,38 +144,34 @@ export class RoleComponent implements OnInit, OnDestroy {
   }
   deleteItems() {
     if (this.selectedItems.length == 0) {
-        this.alertService.showError(
-            MessageConstants.NOT_CHOOSE_ANY_RECORD
-        );
-        return;
+      this.alertService.showError(MessageConstants.NOT_CHOOSE_ANY_RECORD);
+      return;
     }
     var ids = [];
     this.selectedItems.forEach((element) => {
-        ids.push(element.id);
+      ids.push(element.id);
     });
     this.confirmationService.confirm({
-        message: MessageConstants.CONFIRM_DELETE_MSG,
-        accept: () => {
-            this.deleteItemsConfirm(ids);
-        },
+      message: MessageConstants.CONFIRM_DELETE_MSG,
+      accept: () => {
+        this.deleteItemsConfirm(ids);
+      },
     });
-}
+  }
 
-deleteItemsConfirm(ids: any[]) {
+  deleteItemsConfirm(ids: any[]) {
     this.toggleBlockUI(true);
 
     this.roleService.deleteRoles(ids).subscribe({
-        next: () => {
-            this.alertService.showSuccess(
-                MessageConstants.DELETED_OK_MSG
-            );
-            this.loadData();
-            this.selectedItems = [];
-            this.toggleBlockUI(false);
-        },
-        error: () => {
-            this.toggleBlockUI(false);
-        },
+      next: () => {
+        this.alertService.showSuccess(MessageConstants.DELETED_OK_MSG);
+        this.loadData();
+        this.selectedItems = [];
+        this.toggleBlockUI(false);
+      },
+      error: () => {
+        this.toggleBlockUI(false);
+      },
     });
-}
+  }
 }

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using System.ComponentModel.DataAnnotations;
 using web_blog.Core.Domain.Content;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace web_blog.Core.Models.Content
 {
@@ -18,6 +20,13 @@ namespace web_blog.Core.Models.Content
         public string? Thumbnail { get; set; }
         public int ViewCount { get; set; }
         public DateTime DateCreated { get; set; }
+        public required string CategorySlug { set; get; }
+
+        public required string CategoryName { set; get; }
+        public string AuthorUserName { set; get; }
+        public string AuthorName { set; get; }
+
+        public PostStatus Status { set; get; }
 
         public class AutoMapperProfiles : Profile
         {

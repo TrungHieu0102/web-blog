@@ -1,29 +1,25 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using web_blog.Core.Repositories;
 using web_blog.Core.SeedWorks;
 using web_blog.Data.Repositories;
-using static web_blog.Core.SeedWorks.Constants.Permissions;
-
+using Microsoft.AspNetCore.Identity;
+using web_blog.Core.Domain.Identity;
 namespace web_blog.Data.SeedWorks
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly WebBlogContext _context;
 
-        public UnitOfWork(WebBlogContext context, IMapper mapper)
+        public UnitOfWork(WebBlogContext context, IMapper mapper, UserManager<AppUser> userManager)
         {
             _context = context;
-            Posts = new PostRepository(context, mapper);
+            Posts = new PostRepository(context, mapper, userManager);
             PostCategories = new PostCategoryRepository(context, mapper);
-
+            Series = new SeriesRepository(context, mapper);
         }
         public IPostRepository Posts { get; private set; }
         public IPostCategoryRepository PostCategories { get; private set; }
+        public ISeriesRepository Series { get; private set; }
 
 
         public async Task<int> CompleteAsync()

@@ -7,15 +7,11 @@ import {
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
-
 import { NgScrollbarModule } from 'ngx-scrollbar';
-
 // Import routing module
 import { AppRoutingModule } from './app-routing.module';
-
 // Import app component
 import { AppComponent } from './app.component';
-
 // Import containers
 import {
   DefaultFooterComponent,
@@ -69,7 +65,6 @@ import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { UtilityService } from './shared/services/utility.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { UploadService } from './shared/services/upload.service';
-
 const APP_CONTAINERS = [
   DefaultFooterComponent,
   DefaultHeaderComponent,
@@ -109,6 +104,8 @@ const APP_CONTAINERS = [
     HttpClientModule,
     ConfirmDialogModule,
     DynamicDialogModule,
+    
+   
   ],
   providers: [
     {

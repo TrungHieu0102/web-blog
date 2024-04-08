@@ -4,8 +4,6 @@ using web_blog.Core.SeedWorks;
 using web_blog.Data.Repositories;
 using Microsoft.AspNetCore.Identity;
 using web_blog.Core.Domain.Identity;
-using static web_blog.Core.SeedWorks.Constants.Permissions;
-using TeduBlog.Data.Repositories;
 namespace web_blog.Data.SeedWorks
 {
     public class UnitOfWork : IUnitOfWork

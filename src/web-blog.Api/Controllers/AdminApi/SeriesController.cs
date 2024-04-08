@@ -5,6 +5,7 @@ using web_blog.Core.Models.Content;
 using web_blog.Core.Models;
 using web_blog.Core.SeedWorks.Constants;
 using web_blog.Core.SeedWorks;
+using web_blog.Core.Domain.Content;
 
 namespace web_blog.Api.Controllers.AdminApi
 {

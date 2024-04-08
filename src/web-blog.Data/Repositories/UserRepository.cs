@@ -4,7 +4,7 @@ using web_blog.Core.Repositories;
 using web_blog.Data;
 using web_blog.Data.SeedWorks;
 
-namespace TeduBlog.Data.Repositories
+namespace web_blog.Data.Repositories
 {
     public class UserRepository : RepositoryBase<AppUser, Guid>, IUserRepository
     {

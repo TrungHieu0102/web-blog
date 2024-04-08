@@ -5,9 +5,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using web_blog.Core.Domain.Content;
 
-namespace web_blog.Core.Models.Content
+namespace web_blog.Core.Domain.Content
 {
     public class CreateUpdateSeriesRequest
     {

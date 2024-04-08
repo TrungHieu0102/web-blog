@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace web_blog.Core.Models.Content
+namespace web_blog.Core.Domain.Content
 {
     public class AddPostSeriesRequest
     {

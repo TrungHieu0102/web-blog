@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using web_blog.Core.Domain.Content;
-using Microsoft.AspNetCore.Identity;
 using web_blog.Core.Domain.Identity;
-using web_blog.Core.SeedWorks.Constants;
 using web_blog.Core.Models;
 using web_blog.Core.Models.Content;
 using web_blog.Core.Repositories;
+using web_blog.Core.SeedWorks.Constants;
 using web_blog.Data.SeedWorks;
 
 namespace web_blog.Data.Repositories
@@ -191,6 +191,13 @@ namespace web_blog.Data.Repositories
             });
             post.Status = PostStatus.WaitingForApproval;
             _context.Posts.Update(post);
+        }
+        public async Task<List<Post>> GetListUnpaidPublishPosts(Guid userId)
+        {
+            return await _context.Posts
+               .Where(x => x.AuthorUserId == userId && x.IsPaid == false
+                       && x.Status == PostStatus.Published)
+               .ToListAsync();
         }
     }
 }

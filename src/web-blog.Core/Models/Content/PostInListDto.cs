@@ -27,6 +27,9 @@ namespace web_blog.Core.Models.Content
         public string AuthorName { set; get; }
 
         public PostStatus Status { set; get; }
+        public bool IsPaid { get; set; }
+        public double RoyaltyAmount { get; set; }
+        public DateTime? PaidDate { get; set; }
 
         public class AutoMapperProfiles : Profile
         {

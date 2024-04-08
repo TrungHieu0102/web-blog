@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using web_blog.Core.Domain.Identity;
 using web_blog.Core.Domain.Content;
 using web_blog.Core.SeedWorks.Constants;
-
+using web_blog.Core.Domain.Royalty;
 
 
 namespace web_blog.Data
@@ -22,6 +22,7 @@ namespace web_blog.Data
         public DbSet<PostActivityLog> PostActivityLogs { get; set; }
         public DbSet<Series> Series { get; set; }
         public DbSet<PostInSeries> PostInSeries { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

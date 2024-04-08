@@ -50,6 +50,7 @@ import {
   AdminApiRoleApiClient,
   AdminApiSeriesApiClient,
   AdminApiUserApiClient,
+  AdminApiRoyaltyApiClient,
   AdminApiPostCategoryApiClient,
 } from './api/admin-api.service.generated';
 import { environment } from './../environments/environment';
@@ -140,6 +141,7 @@ const APP_CONTAINERS = [
     AdminApiPostCategoryApiClient,
     AdminApiPostApiClient,
     AdminApiSeriesApiClient,
+    AdminApiRoyaltyApiClient,
     DialogService,
     ConfirmationService,
     UploadService,

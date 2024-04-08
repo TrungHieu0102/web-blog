@@ -13,5 +13,6 @@ namespace web_blog.Core.SeedWorks
         IPostCategoryRepository PostCategories { get; }
         ISeriesRepository Series { get; }
         Task<int> CompleteAsync();
+        ITransactionRepository Transactions { get; }
     }
 }

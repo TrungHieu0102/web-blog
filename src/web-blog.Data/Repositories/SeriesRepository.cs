@@ -5,11 +5,12 @@ using web_blog.Core.Models.Content;
 using web_blog.Core.Models;
 using web_blog.Core.Repositories;
 using web_blog.Data.SeedWorks;
+using static web_blog.Core.SeedWorks.Constants.Permissions;
 
 
 namespace web_blog.Data.Repositories
 {
-    public class SeriesRepository : RepositoryBase<Series, Guid>, ISeriesRepository
+    public class SeriesRepository : RepositoryBase<Core.Domain.Content.Series, Guid>, ISeriesRepository
     {
         private readonly IMapper _mapper;
         public SeriesRepository(WebBlogContext context, IMapper mapper) : base(context)
@@ -63,7 +64,10 @@ namespace web_blog.Data.Repositories
                         select p;
             return await _mapper.ProjectTo<PostInListDto>(query).ToListAsync();
         }
-
+        public async Task<bool> HasPost(Guid seriesId)
+        {
+            return await _context.PostInSeries.AnyAsync(x => x.SeriesId == seriesId);
+        }
         public async Task<bool> IsPostInSeries(Guid seriesId, Guid postId)
         {
             return await _context.PostInSeries.AnyAsync(x => x.SeriesId == seriesId && x.PostId == postId);

@@ -4,6 +4,8 @@ using web_blog.Core.SeedWorks;
 using web_blog.Data.Repositories;
 using Microsoft.AspNetCore.Identity;
 using web_blog.Core.Domain.Identity;
+using static web_blog.Core.SeedWorks.Constants.Permissions;
+using TeduBlog.Data.Repositories;
 namespace web_blog.Data.SeedWorks
 {
     public class UnitOfWork : IUnitOfWork
@@ -17,12 +19,13 @@ namespace web_blog.Data.SeedWorks
             PostCategories = new PostCategoryRepository(context, mapper);
             Series = new SeriesRepository(context, mapper);
             Transactions = new TransactionRepository(context, mapper);
+            Users = new UserRepository(context);
         }
         public IPostRepository Posts { get; private set; }
         public IPostCategoryRepository PostCategories { get; private set; }
         public ISeriesRepository Series { get; private set; }
         public ITransactionRepository Transactions { get; private set; }
-
+        public IUserRepository Users { get; private set; }
 
         public async Task<int> CompleteAsync()
         {

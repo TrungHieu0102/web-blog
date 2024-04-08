@@ -13,8 +13,17 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { SharedModule } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-
-
+import { RoleDetailComponent } from './roles/role-detail.component';
+import { WebSharedModule } from 'src/app/shared/modules/web-shared.module';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { PermissionGrantComponent } from './roles/permission-grant.component';
+import { ChangeEmailComponent } from './users/change-email.component';
+import { RoleAssignComponent } from './users/role-assign.component';
+import { SetPasswordComponent } from './users/set-password.component';
+import { UserDetailComponent } from './users/user-detail.component';
+import { BadgeModule } from 'primeng/badge';
+import { PickListModule } from 'primeng/picklist';
+import { ImageModule } from 'primeng/image';
 @NgModule({
   imports: [
     SystemRoutingModule,
@@ -28,9 +37,22 @@ import { InputTextModule } from 'primeng/inputtext';
     CheckboxModule,
     ButtonModule,
     InputTextModule,
-    SharedModule
+    KeyFilterModule,
+    SharedModule,
+    WebSharedModule,
+    BadgeModule,
+    PickListModule,
+    ImageModule,
   ],
-  declarations: [UserComponent, RoleComponent]
+  declarations: [
+    UserComponent,
+    RoleComponent,
+    RoleDetailComponent,
+    PermissionGrantComponent,
+    ChangeEmailComponent,
+    RoleAssignComponent,
+    SetPasswordComponent,
+    UserDetailComponent
+  ],
 })
-export class SystemModule {
-}
+export class SystemModule {}

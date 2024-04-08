@@ -17,6 +17,8 @@ using web_blog.Api.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using web_blog.Core.Services;
+using web_blog.Data.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -84,11 +86,15 @@ builder.Services.AddAutoMapper(typeof(PostInListDto));
 
 //Authen and author
 builder.Services.Configure<JwtTokenSettings>(configuration.GetSection("JwtTokenSettings"));
+builder.Services.Configure<MediaSettings>(configuration.GetSection("MediaSettings"));
+
 builder.Services.AddScoped<SignInManager<AppUser>, SignInManager<AppUser>>();
 builder.Services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
 
+
+builder.Services.AddScoped<IRoyaltyService, RoyaltyService>();
 //Default config for ASP.NET Core
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -135,7 +141,7 @@ if (app.Environment.IsDevelopment())
         c.DisplayRequestDuration();
     });
 }
-
+app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseCors(WebCorsPolicy);
 app.UseAuthentication();

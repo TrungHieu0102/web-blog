@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
+using static web_blog.Core.SeedWorks.Constants.Permissions;
 
 namespace web_blog.Core.Domain.Identity
 {
@@ -26,5 +27,10 @@ namespace web_blog.Core.Domain.Identity
         public DateTime? VipExpireDate { get; set; }
         public DateTime? LastLoginDate { get; set; }
         public double Balance { get; set; }
+        public double RoyaltyAmountPerPost { get; set; }
+        public string GetFullName()
+        {
+            return this.FirstName + " " + this.LastName;
+        }
     }
 }

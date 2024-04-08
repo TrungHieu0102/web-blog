@@ -1,7 +1,31 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using web_blog.Core.ConfigOptions;
+using web_blog.Core.Domain.Identity;
+using web_blog.Data;
+using web_blog.WebApp.Helpers;
+
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
+var connectionString = configuration.GetConnectionString("DefaultConnection");
+builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                      .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+//Custom setup
+builder.Services.Configure<SystemConfig>(configuration.GetSection("SystemConfig"));
+
+builder.Services.AddDbContext<WebBlogContext>(options => options.UseSqlServer(connectionString));
+
+builder.Services.AddIdentity<AppUser, AppRole>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddEntityFrameworkStores<WebBlogContext>()
+                  .AddDefaultTokenProviders();
+
+builder.Services.AddScoped<IUserClaimsPrincipalFactory<AppUser>,
+   CustomClaimsPrincipalFactory>();
+
+//Start pipeline
 
 var app = builder.Build();
 

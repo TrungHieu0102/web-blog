@@ -15,6 +15,7 @@ namespace web_blog.Core.SeedWorks
         Task<int> CompleteAsync();
         ITransactionRepository Transactions { get; }
         IUserRepository Users { get; }
+        ITagRepository Tags { get; }
 
     }
 }

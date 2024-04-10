@@ -28,8 +28,7 @@ namespace web_blog.WebApp.Controllers
         [Route("/profile")]
         public async Task<IActionResult> Index()
         {
-            var userId = User.GetUserId();
-            var user = await _unitOfWork.Users.GetByIdAsync(userId);
+            var user = await GetCurrentUser();
             return View(new ProfileViewModel()
             {
                 Email = user.Email,
@@ -40,10 +39,10 @@ namespace web_blog.WebApp.Controllers
 
         [HttpGet]
         [Route("/profile/edit")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangeProfile()
         {
-            var userId = User.GetUserId();
-            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var user = await GetCurrentUser();
             return View(new ChangeProfileViewModel()
             {
                 FirstName = user.FirstName,
@@ -62,7 +61,7 @@ namespace web_blog.WebApp.Controllers
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)
             {
-                TempData["Success"] = "Update profile successful.";
+                TempData[SystemConsts.FormSuccessMsg] = "Update profile successful.";
             }
             else
             {
@@ -72,7 +71,46 @@ namespace web_blog.WebApp.Controllers
             return View(model);
 
         }
+        [Route("profile/change-password")]
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
 
+        [Route("profile/change-password")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var userProfile = await GetCurrentUser();
+
+            var isPasswordValid = await _userManager.CheckPasswordAsync(userProfile, model.OldPassword);
+            if (!isPasswordValid)
+            {
+                ModelState.AddModelError(string.Empty, "Old password is not correct");
+                return View(model);
+            }
+
+            var result = await _userManager.ChangePasswordAsync(userProfile, model.OldPassword, model.NewPassword);
+            if (result.Succeeded)
+            {
+                await _signInManager.RefreshSignInAsync(userProfile);
+                TempData[SystemConsts.FormSuccessMsg] = "Change password successful";
+                return Redirect(UrlConsts.Profile);
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return View(model);
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
@@ -81,6 +119,11 @@ namespace web_blog.WebApp.Controllers
             await HttpContext.SignOutAsync();
 
             return Redirect(UrlConsts.Home);
+        }
+        private async Task<AppUser> GetCurrentUser()
+        {
+            var userId = User.GetUserId();
+            return await _userManager.FindByIdAsync(userId.ToString());
         }
     }
 }

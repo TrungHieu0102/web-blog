@@ -78,6 +78,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
       { type: 'required', message: 'Bạn phải nhập tên' },
       { type: 'minlength', message: 'Bạn phải nhập ít nhất 3 kí tự' },
       { type: 'maxlength', message: 'Bạn không được nhập quá 255 kí tự' },
+     
     ],
     slug: [{ type: 'required', message: 'Bạn phải URL duy nhất' }],
     description: [{ type: 'required', message: 'Bạn phải nhập mô tả ngắn' }],
@@ -221,7 +222,10 @@ export class PostDetailComponent implements OnInit, OnDestroy {
         Validators.required
       ),
       seoDescription: new FormControl(
-        this.selectedEntity.seoDescription || null
+        this.selectedEntity.seoDescription || null,
+        Validators.compose([
+          Validators.maxLength(255),         
+        ])
       ),
       content: new FormControl(this.selectedEntity.content || null),
       thumbnail: new FormControl(this.selectedEntity.thumbnail || null),
@@ -241,7 +245,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
       if (tag.toLowerCase().indexOf(query.toLowerCase()) == 0) {
         filtered.push(tag);
       }
-    }
+    } 
     if (filtered.length == 0) {
       filtered.push(query);
     }

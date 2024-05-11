@@ -10,5 +10,6 @@ namespace web_blog.Core.ConfigOptions
     {
         public string AppName { get; set; }
         public string AppSlogan { get; set; }
+        public string BackendApiUrl { get; set; }
     }
 }

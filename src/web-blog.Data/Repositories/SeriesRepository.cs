@@ -9,7 +9,7 @@ using web_blog.Data.SeedWorks;
 
 namespace web_blog.Data.Repositories
 {
-    public class SeriesRepository : RepositoryBase<Core.Domain.Content.Series, Guid>, ISeriesRepository
+    public class SeriesRepository : RepositoryBase<Series, Guid>, ISeriesRepository
     {
         private readonly IMapper _mapper;
         public SeriesRepository(WebBlogContext context, IMapper mapper) : base(context)

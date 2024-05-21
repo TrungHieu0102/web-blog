@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using web_blog.Core.ConfigOptions;
 using web_blog.Core.Domain.Identity;
@@ -11,6 +11,7 @@ using web_blog.Core.SeedWorks;
 using web_blog.Core.Events.LoginSuccessed;
 using web_blog.WebApp.Services;
 using IEmailSender = web_blog.WebApp.Services.IEmailSender;
+using Microsoft.Extensions.Configuration;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,6 +48,10 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.AllowedUserNameCharacters =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
     options.User.RequireUniqueEmail = true;
+    ///
+    options.SignIn.RequireConfirmedEmail = false;
+    options.SignIn.RequireConfirmedPhoneNumber = false;     
+
 });
 
 
@@ -60,6 +65,7 @@ builder.Services.AddScoped<IUserClaimsPrincipalFactory<AppUser>,
 
 builder.Services.AddAutoMapper(typeof(PostInListDto));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(LoginSuccessedEvent).Assembly));
+
 #region Configure Services
 // Add services to the container.
 builder.Services.AddScoped(typeof(IRepository<,>), typeof(RepositoryBase<,>));
@@ -91,7 +97,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

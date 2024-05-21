@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using web_blog.Core.Domain.Content;
 using web_blog.Core.Models.Content;
 using web_blog.Core.Models;
@@ -37,6 +37,12 @@ namespace web_blog.Data.Repositories
                 RowCount = totalRow,
                 PageSize = pageSize
             };
+        }
+        public async Task<PostCategoryDto> GetBySlug(string slug)
+        {
+            var category = await _context.PostCategories.FirstOrDefaultAsync(x => x.Slug == slug);
+            if (category == null) { throw new Exception($"Cannot find {slug}"); }
+            return _mapper.Map<PostCategoryDto>(category);
         }
         public async Task<bool> HasPost(Guid categoryId)
         {

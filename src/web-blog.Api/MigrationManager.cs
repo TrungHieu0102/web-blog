@@ -5,6 +5,7 @@ namespace web_blog.Api
 {
     public static class MigrationManager
     {
+        //extention method
         public static WebApplication MigrateDatabase(this WebApplication app)
         {
             using (var scope = app.Services.CreateScope())

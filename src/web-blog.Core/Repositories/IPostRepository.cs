@@ -25,5 +25,7 @@ namespace web_blog.Core.Repositories
         Task<List<string>> GetTagsByPostId(Guid postId);
         Task<List<TagDto>> GetTagObjectsByPostId(Guid postId);
         Task<PagedResult<PostInListDto>> GetPostByTagPaging(string tagSlug, int pageIndex = 1, int pageSize = 10);
+        Task<bool> AddPostComment(PostCommentDto request, Guid userId, Guid postId);
+        Task<List<PostCommentViewDto>> GetPostCommentAsync(Guid id);
     }
 }

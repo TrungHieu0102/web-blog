@@ -12,9 +12,9 @@
                     <h1>@Model.Post.Name</h1>
                     <h2 class="subheading">@Model.Post.Description</h2>
                     <span class="meta">
-                        Posted by
+                        Đăng bởi
                         <a href="@string.Format(UrlConsts.Author,Model.Post.AuthorUserName)">@Model.Post.AuthorName</a>
-                        on @Model.Post.DateCreated.ToLongTimeString()
+                        lúc @Model.Post.DateCreated.ToLongTimeString()
                     </span>
                 </div>
             </div>
@@ -37,3 +37,74 @@
         </div>
     </div>
 </article>
+
+<!-- Post Comment -->
+<article class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-12 col-lg-12 col-xl-12">
+                <h3>BÌNH LUẬN</h3>
+            </div>
+        </div>
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-12 col-lg-12 col-xl-12">
+                <textarea rows="4" class="form-control" id="contentComment"></textarea>
+            </div>
+        </div>
+        @if (User.Identity!.IsAuthenticated)
+        {
+            <div class="row gx-4 gx-lg-5 justify-content-center mt-2">
+                <div class="col-md-12 col-lg-12 col-xl-12">
+                    <button class="btn btn-outline-success" id="fnPostComment">Đăng</button>
+                </div>
+            </div>
+        }
+        <div id="partialViewContainer" class="mt-5"></div>
+    </div>
+</article>
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            loadComment();
+            $("#fnPostComment").on("click", function () {
+                let content = $("#contentComment").val();
+                fetch("https://localhost:7162/post-comment/@Model.Post.Id", {
+                    method: 'POST',
+                    body: JSON.stringify({ Content: content }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                })
+                    .then(response => {
+                        if (response && response.status == 200) {
+                            $("#contentComment").val("");
+                            loadComment();
+                        }
+                    })
+                    .then(data => { })
+                    .catch(error => { });
+            });
+
+
+            function loadComment() {
+                fetch("https://localhost:7162/post-comment/@Model.Post.Id", {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                })
+                    .then(response => {
+                        if (response && response.status == 200) {
+                            return response.text();
+                        }
+                    })
+                    .then(data => {
+                        document.getElementById('partialViewContainer').innerHTML = data;
+                        // $("#body-comment").innerHTML = data;
+                    })
+                    .catch(error => { });
+            }
+        });
+    </script>
+}

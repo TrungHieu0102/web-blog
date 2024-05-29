@@ -23,6 +23,7 @@ namespace web_blog.Data
         public DbSet<Series> Series { get; set; }
         public DbSet<PostInSeries> PostInSeries { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<PostComment> PostComments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

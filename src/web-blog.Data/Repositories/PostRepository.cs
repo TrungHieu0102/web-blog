@@ -299,5 +299,33 @@ namespace web_blog.Data.Repositories
 
             return await _mapper.ProjectTo<TagDto>(query).ToListAsync();
         }
+        public async Task<bool> AddPostComment(PostCommentDto request, Guid userId, Guid postId)
+        {
+            await _context.PostComments.AddAsync(new PostComment
+            {
+                Id = Guid.NewGuid(),
+                UserId = userId,
+                Content = request.Content,
+                CreatedDate = DateTime.Now,
+                PostId = postId,
+            });
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<List<PostCommentViewDto>> GetPostCommentAsync(Guid id)
+        {
+            var iQueryable = _context.PostComments.Include(m => m.User)
+                .Where(m => m.PostId == id);
+
+            var results = await iQueryable.Select(m => new PostCommentViewDto
+            {
+                Content = m.Content,
+                CreatedDate = m.CreatedDate,
+                FullName = m.User.FirstName + " " + m.User.LastName,
+            }).OrderByDescending(m => m.CreatedDate).ToListAsync();
+
+            return results;
+        }
     }
 }

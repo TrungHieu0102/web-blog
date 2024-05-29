@@ -21,13 +21,16 @@ namespace web_blog.Api.Controllers.AdminApi
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
+        private readonly IConfiguration _configuration;
+        private readonly string[] _ignoreCharacters;
 
-        public PostController(IUnitOfWork unitOfWork, IMapper mapper, UserManager<AppUser> userManager)
+        public PostController(IUnitOfWork unitOfWork, IMapper mapper, UserManager<AppUser> userManager, IConfiguration configuration)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
-
+            _configuration = configuration;
+            _ignoreCharacters = _configuration.GetSection("IgnoreCharacter").Get<string[]>() ?? [];
         }
 
         [HttpPost]
@@ -49,8 +52,9 @@ namespace web_blog.Api.Controllers.AdminApi
             var userId = User.GetUserId();
             var user = await _userManager.FindByIdAsync(userId.ToString());
             post.AuthorUserId = userId;
-            post.AuthorName = user.GetFullName();
-            post.AuthorUserName = user.UserName;
+            post.AuthorName = user!.GetFullName();
+            post.AuthorUserName = user.UserName!;
+            if (_ignoreCharacters != null && _ignoreCharacters.Any(m => post.Name.Contains(m))) post.Status = PostStatus.Rejected;
 
             _unitOfWork.Posts.Add(post);
             //Process tag
@@ -100,6 +104,8 @@ namespace web_blog.Api.Controllers.AdminApi
                 post.CategorySlug = category.Slug;
             }
             _mapper.Map(request, post);
+
+            if (_ignoreCharacters != null && _ignoreCharacters.Any(m => post.Name.Contains(m))) post.Status = PostStatus.Rejected;
             //Process tag
             if (request.Tags != null && request.Tags.Length > 0)
             {

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using web_blog.Core.Models.Content;
 using web_blog.Core.SeedWorks;
+using web_blog.WebApp.Extensions;
 using web_blog.WebApp.Models;
 
 namespace web_blog.WebApp.Controllers
@@ -54,6 +56,24 @@ namespace web_blog.WebApp.Controllers
                 Category = category,
                 Tags = tags
             });
+        }
+
+        [HttpPost]
+        [Route("post-comment/{postId}")]
+        public async Task<IActionResult> PostComment([FromBody] PostCommentDto request, Guid postId)
+        {
+            if (!User.Identity!.IsAuthenticated) return RedirectToAction("Index", "Home");
+
+            var result = await _unitOfWork.Posts.AddPostComment(request, User.GetUserId(), postId);
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("post-comment/{postId}")]
+        public async Task<IActionResult> GetComment(Guid postId)
+        {
+            var models = await _unitOfWork.Posts.GetPostCommentAsync(postId);
+            return PartialView("_PostComment", models);
         }
     }
 }

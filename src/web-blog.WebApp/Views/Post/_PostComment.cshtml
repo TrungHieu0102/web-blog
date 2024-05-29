@@ -1,0 +1,42 @@
+﻿@model List<web_blog.Core.Models.Content.PostCommentViewDto>
+<style>
+    .container-test {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 35px;
+    }
+
+    .avatar {
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        margin-right: 10px;
+    }
+
+    .text {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .text p {
+            margin: 0 !important;
+        }
+
+        .text span {
+            font-weight: 700;
+        }
+</style>
+@if(Model != null && Model.Any())
+{
+    foreach(var item in Model)
+    {
+        <div class="container-test">
+            <img class="avatar" src="https://a1.vnecdn.net/s11067989797788386303.jpg?w=60&h=60&s=gJWjBvFHzyx9o7hSF9za2g" />
+            <div class="text">
+                <p><span>@item.FullName</span> @item.Content</p>
+                <p>@item.CreatedDate.ToString("dd-MM-yyyy HH:mm")</p>
+            </div>
+        </div>
+    }
+
+}
